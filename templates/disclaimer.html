@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container_title">
+    <h2>Disclaimer</h2>
+</div>
+
+<div class="container_content">
+    <p>This screening tool is intended for research purposes and is designed to help identify autistic traits 
+        in toddlers, but it is not a diagnostic tool for ASD. Rather, it serves as a reference for parents, caregivers, and healthcare professionals
+        in understanding the child's risk of having ASD. <br>
+        By using this tool, you acknowledge that your anonymized data may be included in the research study.
+    </p>
+    <button id="acceptButton" class="next-button">I Accept</button>
+</div>
+
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <p>This screening tool is intended for research purposes and is designed to help identify autistic traits 
+            in toddlers, but it is not a diagnostic tool for ASD. Rather, it serves as a reference for parents, caregivers, and healthcare professionals
+            in understanding the child's risk of having ASD. <br>
+            By using this tool, you acknowledge that your anonymized data may be included in the research study.
+        </p>
+        <form method="POST" action="{{ url_for('disclaimer') }}">
+            <button type="submit" class="next-button">I Accept</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Display the popup when the accept button is clicked
+    document.getElementById('acceptButton').addEventListener('click', function () {
+        document.getElementById('popup').style.display = 'block';
+    });
+
+    // Close the popup when the close button is clicked
+    function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+    }
+
+    // Close the popup if the user clicks outside of it
+    window.addEventListener('click', function (event) {
+        if (event.target == document.getElementById('popup')) {
+            document.getElementById('popup').style.display = 'none';
+        }
+    });
+</script>
+
+<style>
+    /* Styles for the popup */
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .popup-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 80%;
+    }
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container_title">
+</div> 
+<div class="container_content"> <!-- Added container div -->
+    <form method="POST" action="{{ url_for('preliminary2') }}">
+        <div class="form-group">
+            <label for="family_diagnosed">Has anyone in the family been diagnosed with Autism?</label>
+            <select id="family_diagnosed" name="family_diagnosed">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="Who completed the test">Who is completing this test?</label> <!-- Corrected id value -->
+            <select id="Who completed the test" name="Who completed the test"> <!-- Corrected id value -->
+                <option value="family_member">Family Member</option> <!-- Modified option value -->
+                <option value="health_care_professional">Health Care Professional</option> <!-- Modified option value -->
+                <option value="guardian">Guardian</option>
+                <option value="others">Others</option> <!-- Removed extra 'd' from value -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="next-button">Next</button> <!-- Added class for button styling -->
+        </div>
+    </form>
+</div> <!-- Closing container div -->
+{% endblock %}

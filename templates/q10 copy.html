@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex justify-center mx-auto p-4">
+    <div class="text-2xl font-bold mb-4">
+       
+    </div>
+
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full lg:w-1/2">
+        <form method="POST" action="{{ url_for('q10') }}" id="answerForm">
+
+            <p class="text-lg font-semibold mb-4">Q10: Does your child stare at nothing with no apparent purpose?</p>
+            
+            <div class="relative mt-4 border p-4">
+                <div id="exampleDropdown">
+                    <p class="text-sm font-normal mb-2"><b>Example 1:</b> Your child stares into space without any specific focus.</p>
+                    <p id="example2" class="text-sm font-normal mb-2 hidden"><b>Example 2:</b> Another example for Question 10 if needed.</p>
+                </div>
+            </div>
+
+            <button type="button" id="dropdownButton" class="text-sm font-normal mb-2 focus:outline-none mx-auto text-blue-500">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="inline-block w-4 h-4 ml-1" id="arrowIcon">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+                <span id="buttonText">Show More</span>
+            </button>
+
+            <input type="radio" id="A" name="answer10" value="1" class="hidden">
+            <label for="A" class="cursor-pointer block mb-2 option-label" data-id="A">Many times a day</label>
+
+            <input type="radio" id="B" name="answer10" value="1" class="hidden">
+            <label for="B" class="cursor-pointer block mb-2 option-label" data-id="B">A few times a day</label>
+
+            <input type="radio" id="C" name="answer10" value="1" class="hidden">
+            <label for="C" class="cursor-pointer block mb-2 option-label" data-id="C">A few times a week</label>
+
+            <input type="radio" id="D" name="answer10" value="0" class="hidden">
+            <label for="D" class="cursor-pointer block mb-2 option-label" data-id="D">Less than once a week</label>
+
+            <input type="radio" id="E" name="answer10" value="0" class="hidden">
+            <label for="E" class="cursor-pointer block mb-2 option-label" data-id="E">Never</label>
+            <!-- Add more labels as needed -->
+
+            <div id="errorMessage" class="text-sm text-red-500 mb-2 hidden"></div>
+           
+
+            <div class="flex items-center justify-between mt-4">
+                <a href="{{ url_for('q9') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline back-button">
+                    Back
+                </a>
+                <button type="button" id="submitButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <p>This screening tool is intended for research purposes and is designed to help identify autistic traits in toddlers, but it is not a diagnostic tool for ASD. Rather, it serves as a reference for parents, caregivers, and healthcare professionals in understanding the child's risk of having ASD. <br> By using this tool, you acknowledge that your anonymized data may be included in the research study.</p>
+        <form method="POST" action="{{ url_for('disclaimer') }}">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">I Accept</button>
+        </form>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const labels = document.querySelectorAll('.option-label');
+        labels.forEach(function (label) {
+            label.addEventListener('click', function () {
+                labels.forEach(function (el) {
+                    el.classList.remove('selected');
+                });
+                this.classList.add('selected');
+            });
+        });
+
+        const dropdownButton = document.getElementById('dropdownButton');
+        const example2 = document.getElementById('example2');
+        const arrowIcon = document.getElementById('arrowIcon');
+        const buttonText = document.getElementById('buttonText');
+        const errorMessage = document.getElementById('errorMessage');
+        const submitButton = document.getElementById('submitButton');
+        const popup = document.getElementById('popup');
+
+        dropdownButton.addEventListener('click', function () {
+            example2.classList.toggle('hidden');
+            arrowIcon.style.transform = example2.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            const isHidden = example2.classList.contains('hidden');
+            buttonText.innerText = isHidden ? 'Show More' : 'Show Less';
+            buttonText.style.color = 'blue';
+
+            // Clear error message when toggling dropdown
+            errorMessage.classList.add('hidden');
+        });
+
+        submitButton.addEventListener('click', function () {
+            const selectedOption = document.querySelector('input[name="answer10"]:checked');
+            if (!selectedOption) {
+                errorMessage.innerText = 'Please select an answer before proceeding.';
+                errorMessage.classList.remove('hidden');
+            } else {
+                // Display the popup if an option is selected
+                popup.style.display = 'block';
+            }
+        });
+
+        // Close the popup when the close button is clicked
+        function closePopup() {
+            popup.style.display = 'none';
+        }
+
+        // Close the popup if the user clicks outside of it
+        window.addEventListener('click', function (event) {
+            if (event.target == popup) {
+                popup.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+
+<style>
+    .option-label {
+        color: black;
+        padding: 0.75rem;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        cursor: pointer;
+    }
+
+    .option-label.selected {
+        background-color: #d2d6dc;
+    }
+</style>
+
+{% endblock %}
